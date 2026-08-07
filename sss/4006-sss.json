@@ -1,0 +1,592 @@
+{
+  "programCode": "4006",
+  "programName": "4006 - Bilim Fuarları Destekleme Programı",
+  "categories": [
+    {
+      "id": "1-programin-tanimi",
+      "name": "1. Programın Tanımı",
+      "faqs": [
+        {
+          "question": "Bu programın amacı nedir?",
+          "answer": "Öğrencilerde bilimsel düşünme, araştırma ve proje geliştirme kültürünü yaygınlaştırmayı amaçlamaktadır."
+        },
+        {
+          "question": "Bu program neden oluşturulmuştur?",
+          "answer": "Bilimi toplumun her kesimine yaymak ve öğrencilerin bilime olan ilgisini artırmak ve onları proje hazırlayıp sunma konusunda teşvik etmek amacıyla oluşturulmuştur."
+        },
+        {
+          "question": "Hangi ihtiyacı karşılamaktadır?",
+          "answer": "Öğrencilerin bilimsel araştırma yapabilecekleri ve projelerini sergileyebilecekleri bir öğrenme ortamının oluşturulmasına katkı sunmaktadır."
+        },
+        {
+          "question": "Programın kapsamı nedir?",
+          "answer": "Türkiye genelindeki devlet okullarında öğrenim gören 5-12. sınıf düzeyi öğrencilerinin iş birliği içinde proje hazırlayarak projelerini bilim fuarlarında sergileme süreçlerini kapsamaktadır."
+        },
+        {
+          "question": "Programın temel çıktıları nelerdir?",
+          "answer": "Bilim fuarları aracılığıyla öğrencilerin hazırladığı projeler, öğrencilerin iş birliği içinde bilimsel proje geliştirme süreçlerini öğrenmesi ve bilim kültürüne katkılarıdır."
+        },
+        {
+          "question": "Programın diğer programlardan farkı nedir?",
+          "answer": "Yarışma niteliğinde değil, öğrencilerin bilimsel süreç deneyimi kazanmasını hedefleyen yaygın katılımlı bir destek programıdır."
+        },
+        {
+          "question": "Bu program hâlen yürürlükte midir?",
+          "answer": "Evet, yürürlüktedir."
+        },
+        {
+          "question": "Program ilk ne zaman başlatılmıştır?",
+          "answer": "Program 2013 yılında başlatılmıştır."
+        }
+      ]
+    },
+    {
+      "id": "2-hedef-kitle",
+      "name": "2. Hedef Kitle",
+      "faqs": [
+        {
+          "question": "Kimler başvurabilir?",
+          "answer": "5-12. sınıflar arasında eğitim-öğretim hizmeti veren resmi okullar, Özel Eğitim Uygulama Okulları (II. ve III. Kademe), Özel Eğitim Meslek Okulları ve Bilim ve Sanat Merkezlerinde (BİLSEM) kadrolu veya sözleşmeli olarak tam zamanlı şekilde görev yapan öğretmenler"
+        },
+        {
+          "question": "Kimler başvuramaz?",
+          "answer": "Belirtilen şartları sağlamayan kişiler başvuru yapamazlar."
+        },
+        {
+          "question": "Hangi kurumlar başvurabilir?",
+          "answer": "5-12. sınıflar arasında eğitim-öğretim hizmeti veren resmi okullar, Özel Eğitim Uygulama Okulları (II. ve III. Kademe), Özel Eğitim Meslek Okulları ve Bilim ve Sanat Merkezleri (BİLSEM)"
+        },
+        {
+          "question": "Gerçek kişiler başvurabilir mi?",
+          "answer": "Evet, başvurabilir ancak başvurular görev yaptıkları okul adına yapılır."
+        },
+        {
+          "question": "Yabancı uyruklular başvurabilir mi?",
+          "answer": "Başvuru şartlarını sağlaması halinde başvurabilir."
+        },
+        {
+          "question": "Vakıf üniversiteleri başvurabilir mi?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Devlet üniversiteleri başvurabilir mi?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Şirketler başvurabilir mi?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Yeni kurulan şirketler başvurabilir mi?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Kamu kurumları başvurabilir mi?",
+          "answer": "Millî Eğitim Bakanlığına bağlı ortaokul-lise düzeyindeki resmi (devlet) okullar dışındaki kamu kurumları başvuru yapamaz."
+        },
+        {
+          "question": "STK'lar başvurabilir mi?",
+          "answer": "Hayır."
+        }
+      ]
+    },
+    {
+      "id": "3-uygunluk",
+      "name": "3. Uygunluk",
+      "faqs": [
+        {
+          "question": "Yaş sınırı var mı?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Mezuniyet şartı var mı?",
+          "answer": "Sadece öğretmenler başvuru yapabildiğinden en az lisans mezunu olunması gereklidir."
+        },
+        {
+          "question": "Akademik unvan şartı var mı?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Deneyim şartı var mı?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Kurum şartı var mı?",
+          "answer": "Evet."
+        },
+        {
+          "question": "Ortak zorunluluğu var mı?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Aynı anda başka destek alınabilir mi?",
+          "answer": "Evet, program kurallarına aykırılık oluşturmadığı sürece farklı destek programlarından yararlanılabilir."
+        },
+        {
+          "question": "Aynı kişi tekrar başvurabilir mi?",
+          "answer": "Evet, başvuru koşullarını sağlaması hâlinde sonraki çağrı dönemlerinde yeniden başvuru yapılabilir."
+        },
+        {
+          "question": "Daha önce destek alanlar tekrar başvurabilir mi?",
+          "answer": "Evet, başvurabilir."
+        },
+        {
+          "question": "Aynı proje tekrar sunulabilir mi?",
+          "answer": "Hayır, aynı projelerin herhangi bir revizyon yapılmadan sonraki çağrılarda yeniden sunulması uygun değildir. Yapılan benzerlik sorgulama sürecinde elenme durumu oluşabilir."
+        }
+      ]
+    },
+    {
+      "id": "4-destek-icerigi",
+      "name": "4. Destek İçeriği",
+      "faqs": [
+        {
+          "question": "Hangi giderler desteklenir?",
+          "answer": "Bilim Fuarının etkin bir şekilde gerçekleştirilmesi için gerekli sarf malzeme alımları (kırtasiye, laboratuvar/deney malzemeleri, etkinlik materyalleri vb.), alt proje kapsamında gerekli olan makine-teçhizat alımları, hizmet alımları, bakım-onarım giderleri ve alt projelerin ihtiyaçları doğrultusunda yapılan diğer zaruri alımlar destek kapsamında kabul edilir."
+        },
+        {
+          "question": "Hangi giderler desteklenmez?",
+          "answer": "Bilgisayar, yazıcı, projeksiyon, kamera, harici disk gibi genel amaçlar ile proje kapsamında sınırlı kullanıma sahip özel bir cihaz alımı için yapılan harcamalar kabul edilmez."
+        },
+        {
+          "question": "Personel giderleri karşılanır mı?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Seyahat giderleri karşılanır mı?",
+          "answer": "Normalde hayır ancak “alt projelerin ihtiyaçları doğrultusunda yapılan diğer zaruri alımlar” destek kapsamında kabul edildiğinden bu kapsama uygunsa karşılanabilir."
+        },
+        {
+          "question": "Cihaz alımı desteklenir mi?",
+          "answer": "Bilgisayar, yazıcı, projeksiyon, kamera, harici disk gibi genel amaçlar ile proje kapsamında sınırlı kullanıma sahip özel bir cihaz alımı için yapılan harcamalar kabul edilmez."
+        },
+        {
+          "question": "Yazılım lisansı alınabilir mi?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Hizmet alımı yapılabilir mi?",
+          "answer": "Bilim Fuarının etkin bir şekilde gerçekleştirilmesi için gerekli sarf malzeme alımları (kırtasiye, laboratuvar/deney malzemeleri, etkinlik materyalleri vb.), alt proje kapsamında gerekli olan makine-teçhizat alımları, hizmet alımları, bakım-onarım giderleri ve alt projelerin ihtiyaçları doğrultusunda yapılan diğer zaruri alımlar destek kapsamında kabul edilir."
+        },
+        {
+          "question": "Bursiyer çalıştırılabilir mi?",
+          "answer": "Hayır, çalıştırılamaz."
+        },
+        {
+          "question": "Danışmanlık gideri uygun mudur?",
+          "answer": "Hayır. Destek kapsamının dışındadır."
+        }
+      ]
+    },
+    {
+      "id": "5-finansman",
+      "name": "5. Finansman",
+      "faqs": [
+        {
+          "question": "Destek üst limiti nedir?",
+          "answer": "Programın güncel çağrısı (12. çağrı dönemi) kapsamında destek üst limiti 30.000 TL’dir."
+        },
+        {
+          "question": "Alt limit var mı?",
+          "answer": "Program kapsamında başvuru yapılabilecek en az ve en fazla alt proje sayıları bulunmakta ve destek miktarı bu sayılar doğrultusunda hesaplanmaktadır. Programın güncel çağrısı kapsamında en az alt proje sayısı 5’tir ve bu kapsamda destek alt limiti 10.750 TL’dir."
+        },
+        {
+          "question": "Destek oranı nedir? / Ne kadar/ Kaç lira?",
+          "answer": "Destek oranı bulunmamaktadır."
+        },
+        {
+          "question": "Eş finansman gerekir mi?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Ödemeler nasıl yapılır?",
+          "answer": "Destek tutarı, desteklenmesine karar verilen bilim fuarları belirlendikten sonra, ilgili çağrı bazında sergilenecek alt proje sayısına göre hesaplanır ve yürütücünün başvuruda beyan ettiği IBAN hesabına yatırılır."
+        },
+        {
+          "question": "Vergi kesintisi olur mu?",
+          "answer": "Destek tutarında vergi kesintisi olmamaktadır ancak Proje Teşvik İkramiyesi, İzleyici Ödemesi vb. kişi ödemelerinde vergi kesintisi yapılmaktadır."
+        },
+        {
+          "question": "Destek geri ödemeli midir?",
+          "answer": "Hayır. Desteğin proje kapsamında harcandığına ilişkin fatura sunulmalıdır."
+        },
+        {
+          "question": "Teminat gerekir mi?",
+          "answer": "Hayır."
+        }
+      ]
+    },
+    {
+      "id": "6-basvuru",
+      "name": "6. Başvuru",
+      "faqs": [
+        {
+          "question": "Başvuru nasıl yapılır?",
+          "answer": "Başvurular, program çağrısında belirtilen adımlar izlenerek çevrim içi olarak yapılır."
+        },
+        {
+          "question": "Başvurular nereden yapılır?",
+          "answer": "Başvurular, https://bilimiz.tubitak.gov.tr/bilimFuariBasvuru.htm adresinden yapılır."
+        },
+        {
+          "question": "Başvuru tarihleri nasıl belirlenir?",
+          "answer": "Başvuru tarihleri, TÜBİTAK tarafından yayımlanan çağrı takvimine göre belirlenir."
+        },
+        {
+          "question": "Sürekli açık mı?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Çağrı esaslı mı?",
+          "answer": "Evet."
+        },
+        {
+          "question": "Yılda kaç çağrı açılır?",
+          "answer": "Çağrı yılda 1 kez açılır."
+        },
+        {
+          "question": "Son başvuru tarihi ne zaman?",
+          "answer": "Son başvuru tarihleri TÜBİTAK tarafından yayımlanan çağrı takvimiyle ilan edilir."
+        },
+        {
+          "question": "Elektronik imza gerekir mi?",
+          "answer": "Hayır, başvuru sürecinde elektronik imza gerekli değildir."
+        }
+      ]
+    },
+    {
+      "id": "7-basvuru-belgeleri",
+      "name": "7. Başvuru Belgeleri",
+      "faqs": [
+        {
+          "question": "Hangi belgeler gerekir?",
+          "answer": "Başvuru çevrim içi yapılmakta olup yüklenmesi zorunlu olan bir belge bulunmamaktadır."
+        },
+        {
+          "question": "Hangi belgeler zorunludur?",
+          "answer": "Yüklenmesi zorunlu olan bir belge bulunmamaktadır."
+        },
+        {
+          "question": "İngilizce belge kabul edilir mi?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "İmza gerekir mi?",
+          "answer": "Hayır, başvuru sürecinde elektronik imza gerekli değildir. Ancak desteklenen başvurular için proje destek sözleşmesinin imzalanması aşamasında e-imza gereklidir."
+        },
+        {
+          "question": "Islak imza gerekir mi?",
+          "answer": "Hayır. Başvuru süreci elektronik ortamda yürütülür."
+        },
+        {
+          "question": "Referans mektubu gerekir mi?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Etik kurul gerekir mi?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "İzin belgesi gerekir mi?",
+          "answer": "MEB’e bağlı okul/kurumlar kapsamında yapılacak projeler için veri toplama aracı kullanıldıysa, veri toplama araçlarının (test, anket, görüşme formu vb.) elektronik başvuru sistemine PDF formatında yüklenmesi beklenmektedir. Veri toplama araçlarının uygulanabilmesine ilişkin MEB Araştırma Uygulama İzinleri Başvuru ve Değerlendirme Modülü (https://arastirmaizinleri.meb.gov.tr/) üzerinden alınmış izin belgesinin taratılıp sisteme yüklenmesi gerekmektedir."
+        }
+      ]
+    },
+    {
+      "id": "8-degerlendirme",
+      "name": "8. Değerlendirme",
+      "faqs": [
+        {
+          "question": "Başvurular nasıl değerlendirilir?",
+          "answer": "Yapılan bilim fuarı başvurularındaki her bir alt proje; amaç, yöntem, beklenen sonuç, bilimsel dil, bilim etiği ilke ve kuralları ve programın genel amaçları ile uyumluluk ölçütlerine göre çevrim içi sistem üzerinden bilimsel olarak değerlendirilir."
+        },
+        {
+          "question": "Değerlendirme aşamaları nelerdir?",
+          "answer": "Benzerlik kontrolü ve bilimsel değerlendirme süreci aşamalarından oluşmaktadır."
+        },
+        {
+          "question": "Hakem değerlendirmesi var mı?",
+          "answer": "Başvurular alanlarında uzman dış danışmanlar tarafından değerlendirilir."
+        },
+        {
+          "question": "Panel değerlendirmesi var mı?",
+          "answer": "Başvurular alanlarında uzman dış danışmanlar tarafından değerlendirilir."
+        },
+        {
+          "question": "Başarı kriterleri nelerdir?",
+          "answer": "Başvurular çağrı metninde belirtilen bilimsel değerlendirme ölçütleri doğrultusunda puanlanır."
+        },
+        {
+          "question": "Değerlendirme ne kadar sürer?",
+          "answer": "Ortalama 1 ay sürer."
+        },
+        {
+          "question": "Sonuçlar nasıl duyurulur?",
+          "answer": "Sonuçlar, TÜBİTAK tarafından ilgili Başvuru Sistemi, resmi internet sitesi ve sosyal medya hesapları üzerinden duyurulur."
+        }
+      ]
+    },
+    {
+      "id": "9-yukumlulukler",
+      "name": "9. Yükümlülükler",
+      "faqs": [
+        {
+          "question": "Destek alanların sorumlulukları nelerdir?",
+          "answer": "Proje sözleşmesi kapsamında yürütücü; önerinin öngörülen süre, amaç, kapsam, bütçe ve diğer hususlara uygun olarak yürütülmesi, geliştirilmesi ve sonuçlandırılmasını sağlamalıdır."
+        },
+        {
+          "question": "Rapor sunulur mu?",
+          "answer": "Evet."
+        },
+        {
+          "question": "Ara rapor gerekir mi?",
+          "answer": "Gerekli değildir."
+        },
+        {
+          "question": "Sonuç raporu gerekir mi?",
+          "answer": "Evet. Bilim fuarı tamamlandıktan sonra projelere ilişkin sonuç bilgileri, projelerde görev alan öğrenci-öğretmen bilgileri ve harcama bilgileri sisteme girilmelidir."
+        },
+        {
+          "question": "Yayın zorunluluğu var mı?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Logo kullanımı zorunlu mu?",
+          "answer": "Evet. TÜBİTAK tarafından belirlenen görünürlük kurallarına uygun logo kullanımı zorunludur."
+        },
+        {
+          "question": "Görünürlük kuralları nelerdir?",
+          "answer": "Proje kapsamında hazırlanan tanıtım ve etkinlik materyallerinin programa ait Görünürlük Rehberine uygun hazırlanması gerekmektedir."
+        }
+      ]
+    },
+    {
+      "id": "10-fikri-haklar",
+      "name": "10. Fikri Haklar",
+      "faqs": [
+        {
+          "question": "Patent kime aittir?",
+          "answer": "Projenin gerçekleştirilmesi sırasında veya sonucunda ortaya çıkan her türlü fikri ve sınaî mülkiyet hakkı ile sözleşmeye konu proje çerçevesinde doğması muhtemel fikri ve sınai hakların tümü TÜBİTAK’a aittir."
+        },
+        {
+          "question": "Telif hakları nasıl belirlenir?",
+          "answer": "Telif hakları, ilgili kanun ve mevzuat çerçevesinde belirlenmiş olup proje destek sözleşmesi kapsamında TÜBİTAK’a bağlanmıştır."
+        },
+        {
+          "question": "Lisanslama yapılabilir mi?",
+          "answer": "TÜBİTAK’ın uygun görmesi halinde lisanslama yapılabilir."
+        },
+        {
+          "question": "Ticarileştirme mümkün müdür?",
+          "answer": "Evet. İlgili fikrî ve sınaî mülkiyet hakları kapsamında, mevzuat ve sözleşme hükümlerine uygun olarak mümkündür."
+        },
+        {
+          "question": "Gizlilik nasıl sağlanır?",
+          "answer": "Gizlilik gerektiren durumlarda, sözleşme hükümleri ve ilgili mevzuat kapsamında gizlilik yükümlülüklerine uyulur."
+        }
+      ]
+    },
+    {
+      "id": "11-iptal-ve-degisiklik",
+      "name": "11. İptal ve Değişiklik",
+      "faqs": [
+        {
+          "question": "Proje süresi uzatılabilir mi?",
+          "answer": "Evet. Gerekçeli talep ve TÜBİTAK onayıyla uzatılması mümkün olmakla birlikte uygulamada pek olası değildir. Proje takvimi okulların eğitim-öğretim takvimine göre ayarlanmaktadır."
+        },
+        {
+          "question": "Bütçe değiştirilebilir mi?",
+          "answer": "Destek tutarı, sergilenmesi uygun bulunan alt proje sayısına göre belirlenmekte olup miktarlarda değişiklik yapılmamaktadır."
+        },
+        {
+          "question": "Yürütücü değişebilir mi?",
+          "answer": "Evet. Yürütücünün kurumdan ayrılması veya mücbir bir sebepten ötürü projeyi yürütemeyeceğinin tespit edilmesi durumunda yapılabilir."
+        },
+        {
+          "question": "Kurum değişebilir mi?",
+          "answer": "Hayır, çağrı metninde proje yürütücüsü kurumun değiştirilmesine ilişkin bir düzenleme bulunmamaktadır."
+        },
+        {
+          "question": "Proje sonlandırılabilir mi?",
+          "answer": "TÜBİTAK’ın yaptığı değerlendirme sonucunda, proje yürütücüsünün veya kurumun kusur ve ihmali olmaksızın; yürütücü değişikliğinin yapılamaması, proje sonuç raporu gönderilmemiş veya eksik doldurulduğundan dolayı projenin sonuçlandırılmamış veya Bilim Fuarının gerçekleşmemiş olması durumunda proje yürütücüsünün başvurusu veya ilgili müdürlüğün önerisi üzerine Danışma ve Değerlendirme Kurulu’nun uygun görüşü ve Başkanlığın onayı ile proje yürürlükten kaldırılır."
+        },
+        {
+          "question": "Destek hangi durumlarda iptal edilir?",
+          "answer": "TÜBİTAK’ın yaptığı değerlendirme sonucunda, proje yürütücüsünün kusur ve ihmalinden dolayı; öngörülen amaç ve çalışma programına uygun biçimde yürütülmediği anlaşılan projeler, proje izleyici raporu olumsuz olan ve/veya sonuç raporu eksik doldurulduğundan dolayı sonuçlanmamış projeler ile bilim fuarı gerçekleşmemiş olan projeler, ilgili müdürlüğün önerisi, Danışma Değerlendirme Kurulunun uygun görüşü üzerine Yönetim Kurulu kararıyla iptal edilir."
+        }
+      ]
+    },
+    {
+      "id": "12-sonuclar-ve-etki",
+      "name": "12. Sonuçlar ve Etki",
+      "faqs": [
+        {
+          "question": "Bugüne kadar kaç başvuru alınmıştır?",
+          "answer": "Yaklaşık 95 bin bilim fuarı başvurusu alınmıştır."
+        },
+        {
+          "question": "Bugüne kadar kaç proje desteklenmiştir?",
+          "answer": "Bugüne kadar yaklaşık 53 bin bilim fuarı desteklenmiştir."
+        },
+        {
+          "question": "Bugüne kadar kaç kişi yararlanmıştır?",
+          "answer": "Bugüne kadar yaklaşık 35,5 milyon öğrenci ve ziyaretçiye ulaşılmıştır."
+        },
+        {
+          "question": "Desteklenen toplam bütçe ne kadardır?",
+          "answer": "Programın güncel çağrısı (12. çağrı dönemi) kapsamında destek üst limiti 30.000 TL’dir."
+        },
+        {
+          "question": "Ortalama destek tutarı nedir?",
+          "answer": "Programın güncel çağrısı (12. çağrı dönemi) kapsamında ortalama destek tutarı 21 bin TL’dir."
+        },
+        {
+          "question": "Başarı oranı nedir?",
+          "answer": "12. çağrı kapsamında desteklenen proje oranı %34’tür."
+        },
+        {
+          "question": "En fazla başvuru hangi alanlardan gelmektedir?",
+          "answer": "Programın güncel çağrısı (12. çağrı dönemi) kapsamında başvuru yapılabilecek 63 tematik konu bulunmaktadır. Bunların içinde en fazla başvuru “STEAM”, “Kültürel Miras”, “Oyun ve Oyunlaştırma”, “Değerler Eğitimi” ile “Dil ve Edebiyat” konularından yapılmıştır."
+        },
+        {
+          "question": "En fazla destek hangi alanlara verilmiştir?",
+          "answer": "Programın güncel çağrısı (12. çağrı dönemi) kapsamında en fazla destek verilmiş olan alt proje tematik konuları, başvuru sayıları ile büyük ölçüde doğru orantılı gerçekleşmiştir."
+        },
+        {
+          "question": "Bölgelere göre dağılım nasıldır?",
+          "answer": "Program kapsamında desteklenen projeler Türkiye'nin tüm bölgelerine yayılmaktadır. Ancak başvuru ve destek sayılarında Ankara, İstanbul, Şanlıurfa, İzmir ve Gaziantep gibi iller öne çıkmaktadır."
+        },
+        {
+          "question": "Üniversitelere göre dağılım var mıdır?",
+          "answer": "Üniversiteler başvuru yapamaz."
+        },
+        {
+          "question": "Şirket büyüklüğüne göre dağılım var mıdır?",
+          "answer": "Şirketler başvuru yapamaz."
+        },
+        {
+          "question": "Desteklerden doğan patent sayısı nedir?",
+          "answer": "Bilgi paylaşılmamaktadır."
+        },
+        {
+          "question": "Desteklerden doğan yayın sayısı nedir?",
+          "answer": "45’in üzerinde yayın yapılmıştır. Bunların 14 tanesi programı konu alan yüksek lisans tezleridir."
+        },
+        {
+          "question": "Desteklerden doğan ticarileşen ürün sayısı nedir?",
+          "answer": "Bilgi paylaşılmamaktadır."
+        },
+        {
+          "question": "Uluslararası başarı örnekleri var mıdır?",
+          "answer": "Bilgi paylaşılmamaktadır."
+        },
+        {
+          "question": "Önceki çağrılarda hangi konular desteklenmiştir?",
+          "answer": "Çağrı tematik konuları hemen her çağrı döneminde güncellenmektedir."
+        }
+      ]
+    },
+    {
+      "id": "13-karsilastirma",
+      "name": "13. Karşılaştırma",
+      "faqs": [
+        {
+          "question": "Bu program hangi programlara alternatiftir?",
+          "answer": "Program, Bilim ve Toplum destek programlarına yeni katılan 4009-Köy Okullarına Yönelik Destek Programına alternatif olarak sayılabilir."
+        },
+        {
+          "question": "Benzer programlar hangileridir?",
+          "answer": "4007 Bilim Şenlikleri Destekleme Programı, 4009-Köy Okullarına Yönelik Destek Programı ve 4006-C Bilim Fuarları Festivali Desteği ile benzerlik göstermektedir."
+        },
+        {
+          "question": "En çok hangi programlarla karıştırılır?",
+          "answer": "En çok TÜBİTAK BİDEB tarafından yürütülen 2204 kodlu Araştırma Projeleri Yarışmaları ile karıştırılmaktadır."
+        },
+        {
+          "question": "Bu program ile 2204-A ve 2204-B programı arasındaki fark nedir?",
+          "answer": "Bilim Fuarlarının en büyük farkı, yarışma olmamasıdır. Ayrıca Bilim Fuarlarına özel okullardan başvuru kabul edilmez ve projeler en az 2 (iki) öğrencinin takım çalışması ve iş birliği içinde yürüttükleri ortak çalışmalar olarak değerlendirilir."
+        },
+        {
+          "question": "Hangi durumda bu program tercih edilmelidir?",
+          "answer": "Bu program, yarışma odaklı değil süreç odaklı bilimsel çalışmalar yürütmek ve öğrencilerin takım çalışması içinde proje geliştirmelerini desteklemek isteyen okullar için tercih edilmelidir."
+        },
+        {
+          "question": "Programlar arasında geçiş mümkün müdür?",
+          "answer": "Hayır, değildir. Ancak proje, ilgili programın amaçlarına uygun şekilde revize edilerek farklı bir program kapsamında yeniden sunulabilir."
+        }
+      ]
+    },
+    {
+      "id": "14-ornekler",
+      "name": "14. Örnekler",
+      "faqs": [
+        {
+          "question": "Desteklenen örnek projeler nelerdir?",
+          "answer": "https://bilimiz.tubitak.gov.tr sayfasında yer alan Bilim Fuarı Kılavuzlarında her bir proje türü için örnek projeler yer almaktadır."
+        },
+        {
+          "question": "Başarılı uygulama örnekleri var mı?",
+          "answer": "Desteklenen projeler içinden seçilen başarılı alt proje örnekleri https://bilimiz.tubitak.gov.tr sayfasında paylaşılmaktadır."
+        },
+        {
+          "question": "Hangi sektörlerde örnek projeler bulunmaktadır?",
+          "answer": "Bilgi paylaşılmamaktadır."
+        }
+      ]
+    },
+    {
+      "id": "15-sinirlar-ve-istisnalar",
+      "name": "15. Sınırlar ve İstisnalar",
+      "faqs": [
+        {
+          "question": "Okulda ücretli öğretmen olarak görev yapıyorum, yine de başvurabilir miyim?",
+          "answer": "Çalıştığı kurumda kadrolu/sözleşmeli ve tam zamanlı öğretmen olmayan kişi yürütücü olarak başvuru yapamaz."
+        },
+        {
+          "question": "İki farklı statüye uyuyorum, hangisi geçerli olur?",
+          "answer": "Bilgi paylaşılmamaktadır."
+        },
+        {
+          "question": "Birden fazla programa aynı anda başvurabilir miyim?",
+          "answer": "4006 Programına başvuran kişi, başvuru koşullarını sağlaması hâlinde diğer TÜBİTAK programlarına başvuru yapabilir."
+        },
+        {
+          "question": "Aynı faaliyet için farklı desteklerden yararlanabilir miyim?",
+          "answer": "Hayır."
+        },
+        {
+          "question": "Başvuru sırasında statüm değişirse ne olur?",
+          "answer": "Projenin desteklenmesi halinde bu durum değerlendirilir, gerekli durumlarda yürütücü değişikliği yapılabilir."
+        },
+        {
+          "question": "Kurum değiştirirsem destek devam eder mi?",
+          "answer": "Bu durumda yürütücü değişikliği yapılması gerekir."
+        },
+        {
+          "question": "Mezun olursam destek devam eder mi?",
+          "answer": "Programa yürütücü olarak sadece öğretmenler başvuru yapabilmektedir."
+        },
+        {
+          "question": "Şirket/Firma değiştirirsem destek devam eder mi?",
+          "answer": "Şirket/Firma başvuruları kabul edilmemektedir."
+        },
+        {
+          "question": "Program kapanırsa mevcut destekler etkilenir mi?",
+          "answer": "Hayır, etkilenmez."
+        },
+        {
+          "question": "Çağrı koşulları değişirse hangi kurallar uygulanır?",
+          "answer": "Başvuru yapılan çağrının kuralları uygulanır."
+        },
+        {
+          "question": "İstisnai durumlar nasıl değerlendirilir?",
+          "answer": "İstisnai durumlar, TÜBİTAK’ın ilgili program mevzuatı ve çağrı koşulları çerçevesinde Danışma ve Değerlendirme Kurulu (DDK) görüşü ve Müdürlük kararı ile değerlendirilir."
+        },
+        {
+          "question": "Bu konuda kimden resmî görüş alabilirim?",
+          "answer": "Soru, görüş ve önerileriniz için bt4006@tubitak.gov.tr adresi ile iletişime geçebilir, detaylı bilgiler için web sayfamızı https://tubitak.gov.tr/4006 veya https://bilimiz.tubitak.gov.tr ziyaret edebilirsiniz."
+        }
+      ]
+    }
+  ]
+}

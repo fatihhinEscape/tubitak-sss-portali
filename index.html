@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TÜBİTAK BİTO - SSS Sohbet Asistanı</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tubitak: {
+                            red: '#C8102E',      // TÜBİTAK Resmi Kırmızısı
+                            darkred: '#9B0B23',  // Koyu Kırmızı
+                            navy: '#0C2340',     // Kurumsal Lacivert
+                            darknavy: '#07162C', // Derin Lacivert
+                            lightgray: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome İkon Kütüphanesi -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        #chat-messages {
+            scroll-behavior: smooth;
+        }
+        #chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        #chat-messages::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        #chat-messages::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .message-anim {
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen font-sans flex flex-col justify-between selection:bg-tubitak-red selection:text-white">
+
+    <!-- Header / Navbar (TÜBİTAK Kurumsal Teması) -->
+    <header class="bg-tubitak-navy text-white shadow-lg border-b-4 border-tubitak-red sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3.5 flex justify-between items-center">
+            <!-- Sol Logo ve Unvan -->
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-white p-1.5 flex items-center justify-center shadow-md shrink-0">
+                    <div class="w-full h-full rounded-lg bg-tubitak-red flex items-center justify-center text-white font-black text-xs tracking-tighter">
+                        TÜBİTAK
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-base md:text-lg font-bold tracking-tight leading-none text-white">BİTO SSS Asistanı</h1>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Çevrim içi
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-slate-300 mt-1">Bilim ve Toplum Başkanlığı İnteraktif Danışma Hattı</p>
+                </div>
+            </div>
+
+            <!-- Sağ Buton (Sıfırla) -->
+            <button onclick="resetChat()" class="inline-flex items-center gap-1.5 text-xs bg-white/10 hover:bg-white/20 text-white font-medium px-3.5 py-2 rounded-xl transition-all border border-white/10 shadow-sm active:scale-95">
+                <i class="fa-solid fa-rotate-left text-[11px]"></i>
+                <span class="hidden sm:inline">Yeniden Başlat</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Ana Sohbet Konteynırı -->
+    <main class="max-w-4xl mx-auto px-2 sm:px-4 py-4 md:py-6 w-full flex-grow flex flex-col">
+        <div class="bg-white rounded-2xl shadow-md border border-slate-200 flex-grow flex flex-col overflow-hidden min-h-[580px] max-h-[780px]">
+            
+            <!-- Sohbet Alanı Üst Bilgi Çizgisi -->
+            <div id="chat-status-bar" class="bg-slate-50 border-b border-slate-100 px-4 py-2.5 text-xs text-slate-500 flex items-center justify-between">
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-comments text-tubitak-red"></i>
+                    <span id="current-step-label" class="font-medium text-slate-700">1. Aşama: Destek Programı Seçimi</span>
+                </span>
+                <span class="text-[11px] text-slate-400">7/24 Otomatik Telesekreter</span>
+            </div>
+
+            <!-- Sohbet Mesajları Alanı -->
+            <div id="chat-messages" class="flex-grow p-4 md:p-6 overflow-y-auto space-y-6 bg-slate-50/50">
+                <!-- Mesajlar JS ile dinamik olarak eklenecektir -->
+            </div>
+
+            <!-- Yazıyor... (Typing Indicator) -->
+            <div id="typing-indicator" class="hidden px-6 py-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-500 flex items-center gap-2">
+                <div class="flex gap-1">
+                    <span class="w-2 h-2 bg-tubitak-red rounded-full animate-bounce"></span>
+                    <span class="w-2 h-2 bg-tubitak-red rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                    <span class="w-2 h-2 bg-tubitak-red rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                </div>
+                <span>TÜBİTAK Asistanı yazıyor...</span>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-tubitak-darknavy text-slate-400 py-4 text-center text-xs border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <p>© 2026 Türkiye Bilimsel ve Teknolojik Araştırma Kurumu (TÜBİTAK)</p>
+            <p class="text-[11px] text-slate-500">Bilim ve Toplum Destek Programları SSS Modülü</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Mantığı -->
+    <script>
+        // TÜBİTAK BİTO Destek Programları Listesi (4006-C Dahil)
+        const programsList = [
+            { code: "4004", name: "4004 - Doğa Eğitimi ve Bilim Okulları", desc: "Uygulamalı doğa ve bilim eğitimi projeleri" },
+            { code: "4005", name: "4005 - Yenilikçi Eğitim Uygulamaları", desc: "Öğretmen ve akademisyenlere yenilikçi yöntemler" },
+            { code: "4006", name: "4006 - TÜBİTAK Bilim Fuarları", desc: "5-12. sınıf öğrencilerinin bilimsel projeleri" },
+            { code: "4006-c", name: "4006-C - Bilim Fuarları Festivali Desteği", desc: "Bilim fuarı projelerinin il/ilçe festivalleri" },
+            { code: "4007", name: "4007 - Bilim Şenlikleri Destek Programı", desc: "Halka açık bilim ve teknoloji şenlikleri" },
+            { code: "4008", name: "4008 - Özel Gereksinimli Bireyler Kapsayıcı Toplum", desc: "Özel gereksinimli bireylere yönelik kapsayıcı projeler" },
+            { code: "4009", name: "4009 - Köy Okullarına Yönelik Destek Programı", desc: "Köy okullarındaki öğrencilere yönelik bilim desteği" }
+        ];
+
+        // State Management
+        const state = {
+            selectedProgramCode: null,
+            programData: null,
+            selectedCategory: null
+        };
+
+        const chatMessages = document.getElementById('chat-messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const currentStepLabel = document.getElementById('current-step-label');
+
+        // Sayfa Yüklendiğinde Başlat
+        window.addEventListener('DOMContentLoaded', () => {
+            initChat();
+        });
+
+        // Sohbeti Baştan Başlat
+        function resetChat() {
+            chatMessages.innerHTML = '';
+            state.selectedProgramCode = null;
+            state.programData = null;
+            state.selectedCategory = null;
+            initChat();
+        }
+
+        // Başlangıç Karşılama Mesajı (1. Aşama)
+        function initChat() {
+            currentStepLabel.textContent = "1. Aşama: Destek Programı Seçimi";
+            addBotMessage(
+                "<strong>Merhabalar! TÜBİTAK BİTO Sıkça Sorulan Sorular Telesekreterine Hoş Geldiniz.</strong> 🇹🇷<br><br>" +
+                "TÜBİTAK Bilim ve Toplum Başkanlığı tarafından yürütülen destek programlarından hangisi hakkında bilgi almak istersiniz?", 
+                createProgramOptions()
+            );
+        }
+
+        // 1. Aşama Seçenekleri (Program Butonları)
+        function createProgramOptions() {
+            const container = document.createElement('div');
+            container.className = 'grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3.5 w-full';
+
+            programsList.forEach(p => {
+                const btn = document.createElement('button');
+                btn.className = 'text-left bg-white hover:bg-slate-50 border border-slate-200 hover:border-tubitak-red/60 text-slate-800 font-medium text-xs p-3 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-between group active:scale-[0.99]';
+                btn.innerHTML = `
+                    <div class="pr-2">
+                        <div class="font-bold text-tubitak-navy group-hover:text-tubitak-red transition-colors">${p.name}</div>
+                        <div class="text-[11px] text-slate-400 font-normal mt-0.5">${p.desc}</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-tubitak-red group-hover:translate-x-1 transition-all text-xs shrink-0"></i>
+                `;
+                btn.onclick = () => handleProgramSelect(p.code, p.name, container);
+                container.appendChild(btn);
+            });
+
+            return container;
+        }
+
+        // Program Seçildiğinde
+        async function handleProgramSelect(code, name, parentOptions) {
+            disableOptions(parentOptions);
+            addUserMessage(name);
+            showTyping(true);
+
+            state.selectedProgramCode = code;
+
+            try {
+                // Harici JSON Çek (sss/{code}-sss.json)
+                const res = await fetch(`sss/${code.toLowerCase()}-sss.json`);
+                if (!res.ok) throw new Error("JSON dosyası okunamadı.");
+                state.programData = await res.json();
+            } catch (err) {
+                console.error("Fetch Hatası:", err);
+                state.programData = {
+                    programCode: code,
+                    programName: name,
+                    categories: []
+                };
+            }
+
+            setTimeout(() => {
+                showTyping(false);
+                currentStepLabel.textContent = `2. Aşama: ${code.toUpperCase()} Konu Kategorisi Seçimi`;
+                addBotMessage(
+                    `<strong>${state.programData.programName}</strong> seçildi.<br>Detaylarını öğrenmek istediğiniz konu kategorisini seçiniz:`, 
+                    createCategoryOptions()
+                );
+            }, 500);
+        }
+
+        // 2. Aşama Seçenekleri (Konu Kategorileri)
+        function createCategoryOptions() {
+            const container = document.createElement('div');
+            container.className = 'flex flex-col gap-2 mt-3.5 w-full';
+
+            if (!state.programData.categories || state.programData.categories.length === 0) {
+                container.innerHTML = `<div class="p-3 bg-amber-50 text-amber-800 rounded-xl text-xs border border-amber-200">Bu programa ait JSON verisi yüklenemedi. Dosyanın <code>sss/${state.selectedProgramCode.toLowerCase()}-sss.json</code> olarak mevcut olduğundan emin olunuz.</div>`;
+            } else {
+                state.programData.categories.forEach((cat, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'text-left bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium text-xs px-3.5 py-2.5 rounded-xl transition-all shadow-sm hover:border-tubitak-navy/40 flex items-center justify-between group active:scale-[0.99]';
+                    btn.innerHTML = `
+                        <span class="flex items-center gap-2.5">
+                            <span class="w-5 h-5 rounded-md bg-tubitak-navy/10 text-tubitak-navy font-bold text-[11px] flex items-center justify-center shrink-0">${idx + 1}</span>
+                            <span class="font-semibold text-slate-800 group-hover:text-tubitak-navy transition-colors">${cat.name}</span>
+                        </span>
+                        <span class="text-[10px] bg-slate-100 text-slate-500 font-medium px-2 py-0.5 rounded-full group-hover:bg-tubitak-navy/10 group-hover:text-tubitak-navy transition-colors">
+                            ${cat.faqs ? cat.faqs.length : 0} Soru
+                        </span>
+                    `;
+                    btn.onclick = () => handleCategorySelect(cat, container);
+                    container.appendChild(btn);
+                });
+            }
+
+            // Program Seçimine Dön
+            const backBtn = document.createElement('button');
+            backBtn.className = 'text-left bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3.5 py-2 rounded-xl transition-all mt-1 inline-flex items-center gap-1.5 self-start font-medium border border-slate-200';
+            backBtn.innerHTML = `<i class="fa-solid fa-arrow-left text-[10px]"></i> Başka Bir Program Seç`;
+            backBtn.onclick = () => {
+                disableOptions(container);
+                addUserMessage("Başka bir program seçmek istiyorum.");
+                showTyping(true);
+                setTimeout(() => {
+                    showTyping(false);
+                    initChat();
+                }, 400);
+            };
+            container.appendChild(backBtn);
+
+            return container;
+        }
+
+        // Kategori Seçildiğinde
+        function handleCategorySelect(category, parentOptions) {
+            disableOptions(parentOptions);
+            addUserMessage(category.name);
+            state.selectedCategory = category;
+
+            showTyping(true);
+            setTimeout(() => {
+                showTyping(false);
+                currentStepLabel.textContent = `3. Aşama: Soru Seçimi`;
+                addBotMessage(
+                    `<strong>${category.name}</strong> konusu başlığı altında merak ettiğiniz soruyu seçebilirsiniz:`, 
+                    createFaqOptions()
+                );
+            }, 500);
+        }
+
+        // 3. Aşama Seçenekleri (Soru Listesi)
+        function createFaqOptions() {
+            const container = document.createElement('div');
+            container.className = 'flex flex-col gap-2 mt-3.5 w-full';
+
+            if (!state.selectedCategory.faqs || state.selectedCategory.faqs.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 italic">Bu konuda henüz kayıtlı soru bulunmamaktadır.</p>`;
+            } else {
+                state.selectedCategory.faqs.forEach((faq, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'text-left bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-medium text-xs px-3.5 py-2.5 rounded-xl transition-all shadow-sm hover:border-tubitak-red/50 flex items-start gap-2.5 group active:scale-[0.99]';
+                    btn.innerHTML = `
+                        <span class="text-tubitak-red font-bold shrink-0 mt-0.5">S${idx + 1}.</span>
+                        <span class="flex-1 leading-relaxed group-hover:text-tubitak-navy transition-colors">${faq.question}</span>
+                    `;
+                    btn.onclick = () => handleFaqSelect(faq, container);
+                    container.appendChild(btn);
+                });
+            }
+
+            // Geri Dön Butonu
+            const navGroup = document.createElement('div');
+            navGroup.className = 'flex flex-wrap gap-2 mt-2';
+
+            const backCatBtn = document.createElement('button');
+            backCatBtn.className = 'bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-xl transition-all font-medium inline-flex items-center gap-1 border border-slate-200';
+            backCatBtn.innerHTML = `<i class="fa-solid fa-arrow-left text-[10px]"></i> Konulara Dön`;
+            backCatBtn.onclick = () => {
+                disableOptions(container);
+                addUserMessage("Konulara dönmek istiyorum.");
+                showTyping(true);
+                setTimeout(() => {
+                    showTyping(false);
+                    currentStepLabel.textContent = `2. Aşama: ${state.selectedProgramCode.toUpperCase()} Konu Kategorisi Seçimi`;
+                    addBotMessage("Konu seçim menüsüne dönüldü. Lütfen bir konu kategorisi seçiniz:", createCategoryOptions());
+                }, 400);
+            };
+
+            navGroup.appendChild(backCatBtn);
+            container.appendChild(navGroup);
+
+            return container;
+        }
+
+        // Soru Seçildiğinde (Cevaba Ulaşma)
+        function handleFaqSelect(faq, parentOptions) {
+            disableOptions(parentOptions);
+            addUserMessage(faq.question);
+
+            showTyping(true);
+            setTimeout(() => {
+                showTyping(false);
+                currentStepLabel.textContent = `Yanıt Gösteriliyor`;
+                addBotAnswerMessage(faq.answer, createAnswerActions());
+            }, 600);
+        }
+
+        // Cevap Sonrası Aksiyon Butonları
+        function createAnswerActions() {
+            const container = document.createElement('div');
+            container.className = 'flex flex-wrap gap-2 mt-3 pt-2.5 border-t border-emerald-200/60';
+
+            const sameCatBtn = document.createElement('button');
+            sameCatBtn.className = 'bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs px-3 py-1.5 rounded-xl transition-all font-semibold inline-flex items-center gap-1.5 shadow-sm active:scale-95';
+            sameCatBtn.innerHTML = `<i class="fa-solid fa-list-ul text-[10px] text-emerald-700"></i> Bu Konudaki Diğer Sorular`;
+            sameCatBtn.onclick = () => {
+                disableOptions(container);
+                addUserMessage("Bu konudaki diğer soruları görmek istiyorum.");
+                showTyping(true);
+                setTimeout(() => {
+                    showTyping(false);
+                    currentStepLabel.textContent = `3. Aşama: Soru Seçimi`;
+                    addBotMessage(`<strong>${state.selectedCategory.name}</strong> konusu altındaki diğer sorular:`, createFaqOptions());
+                }, 400);
+            };
+
+            const changeCatBtn = document.createElement('button');
+            changeCatBtn.className = 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs px-3 py-1.5 rounded-xl transition-all font-medium inline-flex items-center gap-1.5 shadow-sm active:scale-95';
+            changeCatBtn.innerHTML = `<i class="fa-solid fa-folder-open text-[10px] text-slate-500"></i> Başka Bir Konu Seç`;
+            changeCatBtn.onclick = () => {
+                disableOptions(container);
+                addUserMessage("Başka bir konu seçmek istiyorum.");
+                showTyping(true);
+                setTimeout(() => {
+                    showTyping(false);
+                    currentStepLabel.textContent = `2. Aşama: ${state.selectedProgramCode.toUpperCase()} Konu Kategorisi Seçimi`;
+                    addBotMessage("Lütfen yeni bir konu kategorisi seçiniz:", createCategoryOptions());
+                }, 400);
+            };
+
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-xl transition-all font-medium inline-flex items-center gap-1.5 active:scale-95';
+            resetBtn.innerHTML = `<i class="fa-solid fa-house text-[10px]"></i> Başlangıç Menüsü`;
+            resetBtn.onclick = () => resetChat();
+
+            container.appendChild(sameCatBtn);
+            container.appendChild(changeCatBtn);
+            container.appendChild(resetBtn);
+
+            return container;
+        }
+
+        // DOM Yardımcıları (Bot Mesajı Ekleme - TÜBİTAK Kurumsal)
+        function addBotMessage(htmlText, optionsNode = null) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex items-start gap-3 message-anim';
+
+            wrapper.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-tubitak-navy text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-sm border border-tubitak-navy/20">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="max-w-[90%] sm:max-w-[82%]">
+                    <div class="bg-white border border-slate-200 text-slate-800 text-xs md:text-sm p-4 rounded-2xl rounded-tl-none shadow-sm leading-relaxed">
+                        ${htmlText}
+                    </div>
+                    <div class="options-holder"></div>
+                </div>
+            `;
+
+            if (optionsNode) {
+                wrapper.querySelector('.options-holder').appendChild(optionsNode);
+            }
+
+            chatMessages.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        // Bot Cevap Mesajı (TÜBİTAK Yeşil Onay Tasarımı)
+        function addBotAnswerMessage(answerText, actionsNode = null) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex items-start gap-3 message-anim';
+
+            wrapper.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-sm">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="max-w-[90%] sm:max-w-[82%]">
+                    <div class="bg-emerald-50/90 border border-emerald-300 text-emerald-950 text-xs md:text-sm p-4 rounded-2xl rounded-tl-none shadow-sm leading-relaxed">
+                        <div class="font-bold text-emerald-850 text-xs mb-1.5 flex items-center gap-1.5">
+                            <i class="fa-solid fa-bullhorn text-emerald-600"></i> TÜBİTAK Resmi Yanıtı:
+                        </div>
+                        ${answerText.replace(/\n/g, '<br>')}
+                    </div>
+                    <div class="options-holder"></div>
+                </div>
+            `;
+
+            if (actionsNode) {
+                wrapper.querySelector('.options-holder').appendChild(actionsNode);
+            }
+
+            chatMessages.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        // Kullanıcı Mesajı Ekleme (TÜBİTAK Kırmızı Balonu)
+        function addUserMessage(text) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex items-end justify-end gap-2 message-anim';
+
+            wrapper.innerHTML = `
+                <div class="bg-tubitak-red text-white text-xs md:text-sm px-4 py-3 rounded-2xl rounded-br-none shadow-sm max-w-[80%] leading-relaxed font-medium">
+                    ${text}
+                </div>
+            `;
+
+            chatMessages.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        // Seçenekleri Pasifleştirme
+        function disableOptions(holderNode) {
+            if (!holderNode) return;
+            const buttons = holderNode.querySelectorAll('button');
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.classList.add('opacity-50', 'pointer-events-none');
+            });
+        }
+
+        // Yükleniyor Göstergesi
+        function showTyping(show) {
+            if (show) {
+                typingIndicator.classList.remove('hidden');
+            } else {
+                typingIndicator.classList.add('hidden');
+            }
+            scrollToBottom();
+        }
+
+        // Sohbeti Aşağı Kaydır
+        function scrollToBottom() {
+            setTimeout(() => {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 50);
+        }
+    </script>
+</body>
+</html>
