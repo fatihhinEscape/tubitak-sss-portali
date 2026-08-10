@@ -58,12 +58,11 @@
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen font-sans flex flex-col justify-between selection:bg-tubitak-red selection:text-white">
 
-    <!-- Header / Navbar (TÜBİTAK Kurumsal Teması) -->
+    <!-- Header / Navbar -->
     <header class="bg-tubitak-navy text-white shadow-lg border-b-4 border-tubitak-red sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-4 py-3.5 flex justify-between items-center">
-            <!-- Sol Logo ve Unvan -->
             <div class="flex items-center gap-3.5">
-                <!-- TÜBİTAK Logosu (icon-192.png) -->
+                <!-- TÜBİTAK Logosu -->
                 <img src="icon-192.png" alt="TÜBİTAK BİTO Logo" class="w-11 h-11 object-contain rounded-xl bg-white p-1 shadow-md shrink-0 border border-white/20">
                 <div>
                     <div class="flex items-center gap-2">
@@ -76,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- Sağ Buton (Sıfırla) -->
             <button onclick="resetChat()" class="inline-flex items-center gap-1.5 text-xs bg-white/10 hover:bg-white/20 text-white font-medium px-3.5 py-2 rounded-xl transition-all border border-white/10 shadow-sm active:scale-95">
                 <i class="fa-solid fa-rotate-left text-[11px]"></i>
                 <span class="hidden sm:inline">Yeniden Başlat</span>
@@ -102,7 +100,7 @@
                 <!-- Mesajlar JS ile dinamik olarak eklenecektir -->
             </div>
 
-            <!-- Yazıyor... (Typing Indicator) -->
+            <!-- Yazıyor... -->
             <div id="typing-indicator" class="hidden px-6 py-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-500 flex items-center gap-2">
                 <div class="flex gap-1">
                     <span class="w-2 h-2 bg-tubitak-red rounded-full animate-bounce"></span>
@@ -110,6 +108,16 @@
                     <span class="w-2 h-2 bg-tubitak-red rounded-full animate-bounce [animation-delay:0.4s]"></span>
                 </div>
                 <span>TÜBİTAK Asistanı yazıyor...</span>
+            </div>
+
+            <!-- YENİ EKLENEN KISIM: Arama Çubuğu (Chat Input) -->
+            <div class="bg-white border-t border-slate-100 p-3 sm:p-4">
+                <form id="search-form" class="relative flex items-center">
+                    <input type="text" id="search-input" autocomplete="off" placeholder="Soru veya kelime arayın... (Örn: bütçe, fuar, başvuru)" class="w-full bg-slate-100/70 text-sm text-slate-700 placeholder-slate-400 border border-slate-200 rounded-full py-3 pl-4 pr-12 focus:outline-none focus:ring-2 focus:ring-tubitak-red/30 focus:border-tubitak-red transition-all shadow-inner">
+                    <button type="submit" class="absolute right-1.5 w-9 h-9 flex items-center justify-center bg-tubitak-red hover:bg-tubitak-darkred text-white rounded-full transition-all shadow-sm active:scale-90">
+                        <i class="fa-solid fa-magnifying-glass text-[13px]"></i>
+                    </button>
+                </form>
             </div>
 
         </div>
@@ -125,7 +133,6 @@
 
     <!-- JavaScript Mantığı -->
     <script>
-        // TÜBİTAK BİTO Destek Programları Listesi (4006-C Dahil)
         const programsList = [
             { code: "4004", name: "4004 - Doğa Eğitimi ve Bilim Okulları", desc: "Uygulamalı doğa ve bilim eğitimi projeleri" },
             { code: "4005", name: "4005 - Yenilikçi Eğitim Uygulamaları", desc: "Öğretmen ve akademisyenlere yenilikçi yöntemler" },
@@ -136,23 +143,54 @@
             { code: "4009", name: "4009 - Köy Okullarına Yönelik Destek Programı", desc: "Köy okullarındaki öğrencilere yönelik bilim desteği" }
         ];
 
-        // State Management
         const state = {
             selectedProgramCode: null,
             programData: null,
             selectedCategory: null
         };
 
+        let searchIndex = []; // Hızlı arama için tüm soruları tutacağımız bellek
+
         const chatMessages = document.getElementById('chat-messages');
         const typingIndicator = document.getElementById('typing-indicator');
         const currentStepLabel = document.getElementById('current-step-label');
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-input');
 
-        // Sayfa Yüklendiğinde Başlat
         window.addEventListener('DOMContentLoaded', () => {
             initChat();
+            buildSearchIndex(); // Sayfa açılırken verileri hafızaya al
         });
 
-        // Sohbeti Baştan Başlat
+        // Arka Planda Tüm Soruları Yükle (Arama Motoru İçin)
+        async function buildSearchIndex() {
+            for (let p of programsList) {
+                try {
+                    const res = await fetch(`sss/${p.code.toLowerCase()}-sss.json`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.categories) {
+                            data.categories.forEach(cat => {
+                                if (cat.faqs) {
+                                    cat.faqs.forEach(faq => {
+                                        searchIndex.push({
+                                            programCode: p.code,
+                                            programName: p.name,
+                                            categoryName: cat.name,
+                                            question: faq.question,
+                                            answer: faq.answer
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    }
+                } catch (err) {
+                    console.log(`${p.code} arama dizinine eklenemedi.`);
+                }
+            }
+        }
+
         function resetChat() {
             chatMessages.innerHTML = '';
             state.selectedProgramCode = null;
@@ -161,17 +199,15 @@
             initChat();
         }
 
-        // Başlangıç Karşılama Mesajı (1. Aşama)
         function initChat() {
             currentStepLabel.textContent = "1. Aşama: Destek Programı Seçimi";
             addBotMessage(
                 "<strong>Merhabalar! TÜBİTAK BİTO Sıkça Sorulan Sorular Telesekreterine Hoş Geldiniz.</strong> 🇹🇷<br><br>" +
-                "TÜBİTAK Bilim ve Toplum Başkanlığı tarafından yürütülen destek programlarından hangisi hakkında bilgi almak istersiniz?", 
+                "TÜBİTAK Bilim ve Toplum Başkanlığı tarafından yürütülen destek programlarından hangisi hakkında bilgi almak istersiniz? Dilerseniz aşağıdaki kutudan <strong>doğrudan soru da aratabilirsiniz.</strong>", 
                 createProgramOptions()
             );
         }
 
-        // 1. Aşama Seçenekleri (Program Butonları)
         function createProgramOptions() {
             const container = document.createElement('div');
             container.className = 'grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3.5 w-full';
@@ -193,45 +229,33 @@
             return container;
         }
 
-        // Program Seçildiğinde
         async function handleProgramSelect(code, name, parentOptions) {
-            disableOptions(parentOptions);
+            disableLastOptions();
             addUserMessage(name);
             showTyping(true);
-
             state.selectedProgramCode = code;
 
             try {
-                // Harici JSON Çek (sss/{code}-sss.json)
                 const res = await fetch(`sss/${code.toLowerCase()}-sss.json`);
                 if (!res.ok) throw new Error("JSON dosyası okunamadı.");
                 state.programData = await res.json();
             } catch (err) {
-                console.error("Fetch Hatası:", err);
-                state.programData = {
-                    programCode: code,
-                    programName: name,
-                    categories: []
-                };
+                state.programData = { programCode: code, programName: name, categories: [] };
             }
 
             setTimeout(() => {
                 showTyping(false);
                 currentStepLabel.textContent = `2. Aşama: ${code.toUpperCase()} Konu Kategorisi Seçimi`;
-                addBotMessage(
-                    `<strong>${state.programData.programName}</strong> seçildi.<br>Detaylarını öğrenmek istediğiniz konu kategorisini seçiniz:`, 
-                    createCategoryOptions()
-                );
+                addBotMessage(`<strong>${state.programData.programName}</strong> seçildi.<br>Detaylarını öğrenmek istediğiniz konu kategorisini seçiniz:`, createCategoryOptions());
             }, 500);
         }
 
-        // 2. Aşama Seçenekleri (Konu Kategorileri)
         function createCategoryOptions() {
             const container = document.createElement('div');
             container.className = 'flex flex-col gap-2 mt-3.5 w-full';
 
             if (!state.programData.categories || state.programData.categories.length === 0) {
-                container.innerHTML = `<div class="p-3 bg-amber-50 text-amber-800 rounded-xl text-xs border border-amber-200">Bu programa ait JSON verisi yüklenemedi. Dosyanın <code>sss/${state.selectedProgramCode.toLowerCase()}-sss.json</code> olarak mevcut olduğundan emin olunuz.</div>`;
+                container.innerHTML = `<div class="p-3 bg-amber-50 text-amber-800 rounded-xl text-xs border border-amber-200">Veri bulunamadı.</div>`;
             } else {
                 state.programData.categories.forEach((cat, idx) => {
                     const btn = document.createElement('button');
@@ -250,48 +274,37 @@
                 });
             }
 
-            // Program Seçimine Dön
             const backBtn = document.createElement('button');
             backBtn.className = 'text-left bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3.5 py-2 rounded-xl transition-all mt-1 inline-flex items-center gap-1.5 self-start font-medium border border-slate-200';
             backBtn.innerHTML = `<i class="fa-solid fa-arrow-left text-[10px]"></i> Başka Bir Program Seç`;
             backBtn.onclick = () => {
-                disableOptions(container);
+                disableLastOptions();
                 addUserMessage("Başka bir program seçmek istiyorum.");
                 showTyping(true);
-                setTimeout(() => {
-                    showTyping(false);
-                    initChat();
-                }, 400);
+                setTimeout(() => { showTyping(false); initChat(); }, 400);
             };
             container.appendChild(backBtn);
-
             return container;
         }
 
-        // Kategori Seçildiğinde
         function handleCategorySelect(category, parentOptions) {
-            disableOptions(parentOptions);
+            disableLastOptions();
             addUserMessage(category.name);
             state.selectedCategory = category;
-
             showTyping(true);
             setTimeout(() => {
                 showTyping(false);
                 currentStepLabel.textContent = `3. Aşama: Soru Seçimi`;
-                addBotMessage(
-                    `<strong>${category.name}</strong> konusu başlığı altında merak ettiğiniz soruyu seçebilirsiniz:`, 
-                    createFaqOptions()
-                );
+                addBotMessage(`<strong>${category.name}</strong> konusu başlığı altında merak ettiğiniz soruyu seçebilirsiniz:`, createFaqOptions());
             }, 500);
         }
 
-        // 3. Aşama Seçenekleri (Soru Listesi)
         function createFaqOptions() {
             const container = document.createElement('div');
             container.className = 'flex flex-col gap-2 mt-3.5 w-full';
 
             if (!state.selectedCategory.faqs || state.selectedCategory.faqs.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 italic">Bu konuda henüz kayıtlı soru bulunmamaktadır.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-500 italic">Bu konuda henüz soru yok.</p>`;
             } else {
                 state.selectedCategory.faqs.forEach((faq, idx) => {
                     const btn = document.createElement('button');
@@ -300,49 +313,147 @@
                         <span class="text-tubitak-red font-bold shrink-0 mt-0.5">S${idx + 1}.</span>
                         <span class="flex-1 leading-relaxed group-hover:text-tubitak-navy transition-colors">${faq.question}</span>
                     `;
-                    btn.onclick = () => handleFaqSelect(faq, container);
+                    btn.onclick = () => {
+                        disableLastOptions();
+                        addUserMessage(faq.question);
+                        showTyping(true);
+                        setTimeout(() => {
+                            showTyping(false);
+                            currentStepLabel.textContent = `Yanıt Gösteriliyor`;
+                            addBotAnswerMessage(faq.answer, createAnswerActions());
+                        }, 600);
+                    };
                     container.appendChild(btn);
                 });
             }
 
-            // Geri Dön Butonu
             const navGroup = document.createElement('div');
             navGroup.className = 'flex flex-wrap gap-2 mt-2';
-
             const backCatBtn = document.createElement('button');
             backCatBtn.className = 'bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-xl transition-all font-medium inline-flex items-center gap-1 border border-slate-200';
             backCatBtn.innerHTML = `<i class="fa-solid fa-arrow-left text-[10px]"></i> Konulara Dön`;
             backCatBtn.onclick = () => {
-                disableOptions(container);
+                disableLastOptions();
                 addUserMessage("Konulara dönmek istiyorum.");
                 showTyping(true);
                 setTimeout(() => {
                     showTyping(false);
                     currentStepLabel.textContent = `2. Aşama: ${state.selectedProgramCode.toUpperCase()} Konu Kategorisi Seçimi`;
-                    addBotMessage("Konu seçim menüsüne dönüldü. Lütfen bir konu kategorisi seçiniz:", createCategoryOptions());
+                    addBotMessage("Konu seçim menüsüne dönüldü:", createCategoryOptions());
                 }, 400);
             };
-
             navGroup.appendChild(backCatBtn);
+            container.appendChild(navGroup);
+            return container;
+        }
+
+        // YENİ EKLENEN KISIM: Arama Motoru Mantığı
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (!query) return;
+
+            searchInput.value = '';
+            disableLastOptions(); // Ekrandaki son butonları pasifleştir
+            
+            addUserMessage(query);
+            showTyping(true);
+
+            setTimeout(() => {
+                showTyping(false);
+                const qLower = query.toLowerCase();
+                
+                // Hafızadaki tüm sorularda eşleşme ara
+                const results = searchIndex.filter(f => 
+                    f.question.toLowerCase().includes(qLower) || 
+                    f.answer.toLowerCase().includes(qLower)
+                );
+
+                currentStepLabel.textContent = "Arama Sonuçları";
+
+                if (results.length > 0) {
+                    addBotMessage(`<strong>"${query}"</strong> araması için <strong>${results.length}</strong> sonuç buldum. İncelemek istediğiniz soruyu seçebilirsiniz:`, createSearchResultsOptions(results));
+                } else {
+                    addBotMessage(`Maalesef <strong>"${query}"</strong> ile ilgili veri tabanımızda bir kayıt bulamadım. Lütfen farklı anahtar kelimeler deneyin veya ana menüye dönün.`, createSearchAnswerActions());
+                }
+            }, 700);
+        });
+
+        // Arama Sonuçlarını Listeleme (YENİ FONKSİYON)
+        function createSearchResultsOptions(results) {
+            const container = document.createElement('div');
+            container.className = 'flex flex-col gap-2 mt-3.5 w-full';
+
+            // Ekrana sığması için maksimum ilk 8 sonucu gösteriyoruz
+            const displayResults = results.slice(0, 8); 
+
+            displayResults.forEach((faq) => {
+                const btn = document.createElement('button');
+                btn.className = 'text-left bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-medium text-xs px-3.5 py-2.5 rounded-xl transition-all shadow-sm hover:border-tubitak-red/50 flex flex-col items-start gap-1 group active:scale-[0.99]';
+                btn.innerHTML = `
+                    <div class="flex items-start gap-2 w-full">
+                        <span class="text-tubitak-red font-bold shrink-0 mt-0.5"><i class="fa-solid fa-magnifying-glass text-[10px]"></i></span>
+                        <span class="flex-1 leading-relaxed group-hover:text-tubitak-navy transition-colors">${faq.question}</span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-normal ml-5">
+                        <span class="font-semibold text-tubitak-navy">${faq.programCode}</span> • ${faq.categoryName}
+                    </div>
+                `;
+                btn.onclick = () => {
+                    disableLastOptions();
+                    addUserMessage(faq.question);
+                    showTyping(true);
+                    setTimeout(() => {
+                        showTyping(false);
+                        currentStepLabel.textContent = `Yanıt Gösteriliyor`;
+                        addBotAnswerMessage(faq.answer, createSearchAnswerActions());
+                    }, 600);
+                };
+                container.appendChild(btn);
+            });
+
+            if (results.length > 8) {
+                const info = document.createElement('div');
+                info.className = 'text-[10px] text-slate-400 italic mt-1 pl-1';
+                info.innerText = `Toplam ${results.length} sonuç bulundu, en uygun 8 tanesi listeleniyor.`;
+                container.appendChild(info);
+            }
+
+            const navGroup = document.createElement('div');
+            navGroup.className = 'flex flex-wrap gap-2 mt-2';
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-xl transition-all font-medium inline-flex items-center gap-1.5 border border-slate-200';
+            resetBtn.innerHTML = `<i class="fa-solid fa-house text-[10px]"></i> Ana Menüye Dön`;
+            resetBtn.onclick = () => resetChat();
+            navGroup.appendChild(resetBtn);
             container.appendChild(navGroup);
 
             return container;
         }
 
-        // Soru Seçildiğinde (Cevaba Ulaşma)
-        function handleFaqSelect(faq, parentOptions) {
-            disableOptions(parentOptions);
-            addUserMessage(faq.question);
+        // Arama Sonrası Yanıt Menüsü (YENİ FONKSİYON)
+        function createSearchAnswerActions() {
+            const container = document.createElement('div');
+            container.className = 'flex flex-wrap gap-2 mt-3 pt-2.5 border-t border-emerald-200/60';
 
-            showTyping(true);
-            setTimeout(() => {
-                showTyping(false);
-                currentStepLabel.textContent = `Yanıt Gösteriliyor`;
-                addBotAnswerMessage(faq.answer, createAnswerActions());
-            }, 600);
+            const backToSearchBtn = document.createElement('button');
+            backToSearchBtn.className = 'bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs px-3 py-1.5 rounded-xl transition-all font-semibold inline-flex items-center gap-1.5 shadow-sm active:scale-95';
+            backToSearchBtn.innerHTML = `<i class="fa-solid fa-magnifying-glass text-[10px] text-emerald-700"></i> Yeni Arama Yap`;
+            backToSearchBtn.onclick = () => {
+                searchInput.focus();
+            };
+
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-xl transition-all font-medium inline-flex items-center gap-1.5 active:scale-95 border border-slate-200';
+            resetBtn.innerHTML = `<i class="fa-solid fa-house text-[10px]"></i> Ana Menüye Dön`;
+            resetBtn.onclick = () => resetChat();
+
+            container.appendChild(backToSearchBtn);
+            container.appendChild(resetBtn);
+            return container;
         }
 
-        // Cevap Sonrası Aksiyon Butonları
+        // Klasik Yanıt Menüsü
         function createAnswerActions() {
             const container = document.createElement('div');
             container.className = 'flex flex-wrap gap-2 mt-3 pt-2.5 border-t border-emerald-200/60';
@@ -351,7 +462,7 @@
             sameCatBtn.className = 'bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs px-3 py-1.5 rounded-xl transition-all font-semibold inline-flex items-center gap-1.5 shadow-sm active:scale-95';
             sameCatBtn.innerHTML = `<i class="fa-solid fa-list-ul text-[10px] text-emerald-700"></i> Bu Konudaki Diğer Sorular`;
             sameCatBtn.onclick = () => {
-                disableOptions(container);
+                disableLastOptions();
                 addUserMessage("Bu konudaki diğer soruları görmek istiyorum.");
                 showTyping(true);
                 setTimeout(() => {
@@ -361,37 +472,19 @@
                 }, 400);
             };
 
-            const changeCatBtn = document.createElement('button');
-            changeCatBtn.className = 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs px-3 py-1.5 rounded-xl transition-all font-medium inline-flex items-center gap-1.5 shadow-sm active:scale-95';
-            changeCatBtn.innerHTML = `<i class="fa-solid fa-folder-open text-[10px] text-slate-500"></i> Başka Bir Konu Seç`;
-            changeCatBtn.onclick = () => {
-                disableOptions(container);
-                addUserMessage("Başka bir konu seçmek istiyorum.");
-                showTyping(true);
-                setTimeout(() => {
-                    showTyping(false);
-                    currentStepLabel.textContent = `2. Aşama: ${state.selectedProgramCode.toUpperCase()} Konu Kategorisi Seçimi`;
-                    addBotMessage("Lütfen yeni bir konu kategorisi seçiniz:", createCategoryOptions());
-                }, 400);
-            };
-
             const resetBtn = document.createElement('button');
-            resetBtn.className = 'bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-xl transition-all font-medium inline-flex items-center gap-1.5 active:scale-95';
-            resetBtn.innerHTML = `<i class="fa-solid fa-house text-[10px]"></i> Başlangıç Menüsü`;
+            resetBtn.className = 'bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-xl transition-all font-medium inline-flex items-center gap-1.5 active:scale-95 border border-slate-200';
+            resetBtn.innerHTML = `<i class="fa-solid fa-house text-[10px]"></i> Ana Menüye Dön`;
             resetBtn.onclick = () => resetChat();
 
             container.appendChild(sameCatBtn);
-            container.appendChild(changeCatBtn);
             container.appendChild(resetBtn);
-
             return container;
         }
 
-        // DOM Yardımcıları (Bot Mesajı Ekleme - TÜBİTAK Kurumsal)
         function addBotMessage(htmlText, optionsNode = null) {
             const wrapper = document.createElement('div');
             wrapper.className = 'flex items-start gap-3 message-anim';
-
             wrapper.innerHTML = `
                 <div class="w-8 h-8 rounded-full bg-tubitak-navy text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-sm border border-tubitak-navy/20">
                     <i class="fa-solid fa-robot"></i>
@@ -403,20 +496,14 @@
                     <div class="options-holder"></div>
                 </div>
             `;
-
-            if (optionsNode) {
-                wrapper.querySelector('.options-holder').appendChild(optionsNode);
-            }
-
+            if (optionsNode) wrapper.querySelector('.options-holder').appendChild(optionsNode);
             chatMessages.appendChild(wrapper);
             scrollToBottom();
         }
 
-        // Bot Cevap Mesajı (TÜBİTAK Yeşil Onay Tasarımı)
         function addBotAnswerMessage(answerText, actionsNode = null) {
             const wrapper = document.createElement('div');
             wrapper.className = 'flex items-start gap-3 message-anim';
-
             wrapper.innerHTML = `
                 <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-sm">
                     <i class="fa-solid fa-circle-check"></i>
@@ -431,41 +518,35 @@
                     <div class="options-holder"></div>
                 </div>
             `;
-
-            if (actionsNode) {
-                wrapper.querySelector('.options-holder').appendChild(actionsNode);
-            }
-
+            if (actionsNode) wrapper.querySelector('.options-holder').appendChild(actionsNode);
             chatMessages.appendChild(wrapper);
             scrollToBottom();
         }
 
-        // Kullanıcı Mesajı Ekleme (TÜBİTAK Kırmızı Balonu)
         function addUserMessage(text) {
             const wrapper = document.createElement('div');
             wrapper.className = 'flex items-end justify-end gap-2 message-anim';
-
             wrapper.innerHTML = `
                 <div class="bg-tubitak-red text-white text-xs md:text-sm px-4 py-3 rounded-2xl rounded-br-none shadow-sm max-w-[80%] leading-relaxed font-medium">
                     ${text}
                 </div>
             `;
-
             chatMessages.appendChild(wrapper);
             scrollToBottom();
         }
 
-        // Seçenekleri Pasifleştirme
-        function disableOptions(holderNode) {
-            if (!holderNode) return;
-            const buttons = holderNode.querySelectorAll('button');
-            buttons.forEach(b => {
-                b.disabled = true;
-                b.classList.add('opacity-50', 'pointer-events-none');
-            });
+        // Genel bir pasifleştirici fonksiyon
+        function disableLastOptions() {
+            const holders = chatMessages.querySelectorAll('.options-holder');
+            if(holders.length > 0) {
+                const buttons = holders[holders.length - 1].querySelectorAll('button');
+                buttons.forEach(b => {
+                    b.disabled = true;
+                    b.classList.add('opacity-50', 'pointer-events-none');
+                });
+            }
         }
 
-        // Yükleniyor Göstergesi
         function showTyping(show) {
             if (show) {
                 typingIndicator.classList.remove('hidden');
@@ -475,7 +556,6 @@
             scrollToBottom();
         }
 
-        // Sohbeti Aşağı Kaydır
         function scrollToBottom() {
             setTimeout(() => {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
